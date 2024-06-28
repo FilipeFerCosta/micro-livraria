@@ -43,7 +43,22 @@ app.get('/shipping/:cep', (req, res, next) => {
 });
 
 /**
- * Inicia o router
+ * Consulta um produto pelo ID via InventoryService
+ */
+app.get('/product/:id', (req, res, next) => {
+    // Chama método do microsserviço InventoryService para buscar o produto pelo ID
+    inventory.SearchProductByID({ id: req.params.id }, (err, product) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send({ error: 'something failed :(' });
+        } else {
+            res.json(product);
+        }
+    });
+});
+
+/**
+ * Inicia o servidor Express
  */
 app.listen(3000, () => {
     console.log('Controller Service running on http://127.0.0.1:3000');
